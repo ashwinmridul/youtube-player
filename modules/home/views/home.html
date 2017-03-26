@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="modules/home/styles/home.css">
+<nav class="navbar navbar-default navbar-fixed-top top-header">
+  <div class="container-fluid">
+    <h3 class="navbar-text">VideoKen</h3>
+    <p class="navbar-text navbar-right"><a href="#/login">Logout</a></p>
+  </div>
+</nav>
+<div class="container-fluid side-padding-none bottom-content">
+	<div class="panel panel-default left-panel">
+		<div class="panel-header">
+			<i class="fa fa-play pull-right panel-icon" title="Play videos" ng-click="startPlayingVideos()" aria-hidden="true"></i>
+			<i class="fa fa-plus pull-right panel-icon" title="Add video" ng-click="openAddVideo()" aria-hidden="true"></i>
+			<h4>My Library</h4></div>
+		<div class="panel-body side-padding-none">
+			<div class="container-fluid">
+				<div ng-repeat="video in videoList" ng-class="{'color-blue': currentIndex == $index}">
+					<i class="fa fa-youtube-play pull-left"></i>
+					<h5 class="video-title">{{video.title}}</h5>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="right-panel">
+		<div class="container-fluid align-center">
+			<div class="alert alert-success message" ng-if="libraryWatched">You have watched the entire library</div>
+			<div ng-if="!!videoTitle && !!viewsCount">
+				<span class="pull-left"><b>Title: </b>{{videoTitle}}</span><span class="pull-right"><b>Views: </b>{{viewsCount}}</span></div>
+			<div id="player"></div>
+		</div>
+	</div>
+</div>
