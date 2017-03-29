@@ -20,11 +20,6 @@ angular.module('Home')
     	$scope.startPlayingVideos = function() {
     		$scope.libraryWatched = false;
     		$scope.currentIndex = 0;
-    		$scope.playingVideoList = [];
-    		angular.forEach($scope.videoList, function(video) {
-    			$scope.playingVideoList.push(video);
-    			$scope.playingVideoList.push(video);
-    		});
     		createVideoPlayer();
     	};
 
@@ -63,27 +58,33 @@ angular.module('Home')
 				}
 			});
 
+			var lastUpdated;
+
 			function onPlayerStateChange(event) {
 				if(event.data == YT.PlayerState.ENDED) {
-					$scope.videoTitle = null;
-					$scope.viewsCount = null;
-					$scope.currentIndex++;
-					if($scope.currentIndex < $scope.playingVideoList.length) {
-						playVideo($scope.playingVideoList[$scope.currentIndex], player);
-						$scope.$apply();
-					} else {
-						$scope.currentIndex = null;
-						$scope.libraryWatched = true;
-						player.destroy();
+					var curTime = + new Date();
+					if(!lastUpdated || curTime > lastUpdated + 1000) {
+						lastUpdated = curTime;
 						$scope.videoTitle = null;
 						$scope.viewsCount = null;
-						$scope.$apply();
+						$scope.currentIndex++;
+						if($scope.currentIndex < $scope.videoList.length) {
+							playVideo($scope.videoList[$scope.currentIndex], player);
+							$scope.$apply();
+						} else {
+							$scope.currentIndex = null;
+							$scope.libraryWatched = true;
+							player.destroy();
+							$scope.videoTitle = null;
+							$scope.viewsCount = null;
+							$scope.$apply();
+						}
 					}
 				}
 			}
 
 			function onPlayerReady() {
-				playVideo($scope.playingVideoList[$scope.currentIndex], player);
+				playVideo($scope.videoList[$scope.currentIndex], player);
 				$scope.$apply();
 			}
     	};

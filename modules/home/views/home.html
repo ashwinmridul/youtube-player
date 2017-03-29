@@ -13,9 +13,9 @@
 			<h4>My Library</h4></div>
 		<div class="panel-body side-padding-none">
 			<div class="container-fluid">
-				<div ng-repeat="video in videoList" ng-class="{'color-blue': (!!currentIndex || currentIndex == 0) && currentIndex / 2 == $index}">
+				<div ng-repeat="video in videoList" ng-class="{'color-blue': currentIndex == $index}">
 					<i class="fa fa-youtube-play pull-left"></i>
-					<h5 class="video-title">{{video.title}}</h5>
+					<h5>{{video.title}}</h5>
 				</div>
 			</div>
 		</div>

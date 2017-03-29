@@ -69,6 +69,15 @@ angular.module('AddVideo')
             if(!!$scope.error) {
                 return;
             }
+            if(!$scope.videoStart) {
+                $scope.videoStart = 0;
+            }
+            if(!$scope.videoEnd) {
+                $scope.videoEnd = $scope.videoLength;
+            }
+            if(!$scope.videoTitle) {
+                $scope.videoTitle = $scope.videoDesc;
+            }
     		var videos = !!$localStorage.videos ? JSON.parse($localStorage.videos) : [];
     		var videoId = "";
     		if($scope.videoUrl.indexOf("https://www.youtube.com/watch?v=") == -1) {
