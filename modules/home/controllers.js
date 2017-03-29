@@ -20,6 +20,11 @@ angular.module('Home')
     	$scope.startPlayingVideos = function() {
     		$scope.libraryWatched = false;
     		$scope.currentIndex = 0;
+    		$scope.playingVideoList = [];
+    		angular.forEach($scope.videoList, function(video) {
+    			$scope.playingVideoList.push(video);
+    			$scope.playingVideoList.push(video);
+    		});
     		createVideoPlayer();
     	};
 
@@ -27,7 +32,9 @@ angular.module('Home')
     		var modalInstance = $modal.open({
 				templateUrl: 'modules/addVideo/views/addVideo.html',
 				controller: 'AddVideoCtrl',
-				size: 'lg'
+				size: 'lg',
+				backdrop: 'static',
+				keyboard: false
 		    });
 		    modalInstance.result.then(function(response) {
 		    	$scope.loadVideos();
@@ -41,25 +48,33 @@ angular.module('Home')
 				height: '390',
 				width: '640',
 				playerVars: {
-					controls: 0
-				},
+                    autoplay: 0,
+                    controls: 0,
+                    iv_load_policy: 3,
+                    cc_load_policy: 0,
+                    modestbranding: 1,
+                    playsinline: 1,
+                    rel: 0,
+                    showinfo: 0
+                },
 				events: {
 					'onReady': onPlayerReady,
 					'onStateChange': onPlayerStateChange
 				}
 			});
 
-			var endCounts = 0;
-
 			function onPlayerStateChange(event) {
 				if(event.data == YT.PlayerState.ENDED) {
-					player.destroy();
+					$scope.videoTitle = null;
+					$scope.viewsCount = null;
 					$scope.currentIndex++;
-					if($scope.currentIndex < $scope.videoList.length) {
-						createVideoPlayer();
+					if($scope.currentIndex < $scope.playingVideoList.length) {
+						playVideo($scope.playingVideoList[$scope.currentIndex], player);
+						$scope.$apply();
 					} else {
 						$scope.currentIndex = null;
 						$scope.libraryWatched = true;
+						player.destroy();
 						$scope.videoTitle = null;
 						$scope.viewsCount = null;
 						$scope.$apply();
@@ -68,7 +83,7 @@ angular.module('Home')
 			}
 
 			function onPlayerReady() {
-				playVideo($scope.videoList[$scope.currentIndex], player);
+				playVideo($scope.playingVideoList[$scope.currentIndex], player);
 				$scope.$apply();
 			}
     	};

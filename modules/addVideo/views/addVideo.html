@@ -7,22 +7,27 @@
     	<div class="form-group row">
 		  <label class="col-2 col-form-label">Youtube Video URL or ID</label>
 		  <div class="col-10">
-		    <input type="text" class="form-control" ng-model="videoUrl" placeholder="Video URL or ID">
+		    <input type="text" class="form-control" ng-model="videoUrl" placeholder="Video URL or ID" ng-change="validateURL()">
+		    <span class="error" ng-if="!!urlValidated && !videoLength">Incorrect URL or ID</span>
+		    <span class="info" ng-if="!!urlValidated && !!videoLength"><b>Video:</b> {{videoDesc}}<br><b>Duration:</b> {{videoLength}} second(s)</span>
 		  </div>
 		</div>
-		<div class="form-group row">
+		<img ng-if="urlValidating" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+		<div class="form-group row" ng-show="!!videoLength">
 		  <label class="col-2 col-form-label">Video Start time in sec</label>
 		  <div class="col-10">
 		    <input type="text" class="form-control" ng-model="videoStart" placeholder="Video Start time in sec">
+		    <span class="error" ng-if="!!error && !!errors.videoStart">{{errors.videoStart}}</span>
 		  </div>
 		</div>
-		<div class="form-group row">
+		<div class="form-group row" ng-show="!!videoLength">
 		  <label class="col-2 col-form-label">Video End time in sec</label>
 		  <div class="col-10">
 		    <input type="text" class="form-control" ng-model="videoEnd" placeholder="Video End time in sec">
+		    <span class="error" ng-if="!!error && !!errors.videoEnd">{{errors.videoEnd}}</span>
 		  </div>
 		</div>
-		<div class="form-group row">
+		<div class="form-group row" ng-show="!!videoLength">
 		  <label class="col-2 col-form-label">Video title</label>
 		  <div class="col-10">
 		    <input type="text" class="form-control" ng-model="videoTitle" placeholder="Video title">
@@ -31,6 +36,6 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="ok()">OK</button>
+    <button class="btn btn-primary" ng-click="ok()" ng-disabled="urlValidating || !videoLength">OK</button>
     <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
 </div>
